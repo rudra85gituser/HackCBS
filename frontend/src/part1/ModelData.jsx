@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Button, Container } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Button, Container,TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const ModelData = () => {
@@ -29,32 +29,43 @@ const ModelData = () => {
   const handleGoBack = () => {
     navigate('/part1/seller');  // Replace with your seller form route
   };
-
+  
   return (
-    <Container maxWidth="md" sx={{ marginTop: 8 }}>
+    <Container maxWidth="md" sx={{ marginTop: 15, }}>
       <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
         Review of Processed Images
       </Typography>
       
-
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <TextField
+          label="Search reviews"
+          variant="outlined"
+          fullWidth
+          sx={{ maxWidth: '100%', mr: 2 }}
+          style={{background:"white"}}
+        />
+        
+      </Box>
       {/* Render each product in a vertically aligned card with image on the right */}
       {modelData.map((data) => (
-        <Card key={data.id} sx={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', mb: 4, padding: 2 }}>
-          <CardMedia
-            component="img"
-            sx={{ width: 250, height: 200, marginLeft: 2 }}
-            image={data.image}
-            alt="Processed product image"
-          />
-          <CardContent sx={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              Estimated Price: {data.estimatedPrice}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {data.description}
-            </Typography>
-          </CardContent>
-        </Card>
+        <Card key={data.id} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mb: 4, padding: 2,gap:'150px' }}>
+        <CardMedia
+          component="img"
+          sx={{ width: 250, height: 200, marginRight: 2,marginLeft:1 }}
+          image={data.image}
+          alt="Processed product image"
+        />
+        <CardContent sx={{ flex: 1 }}
+        style={{marginRight:'0px'}}>
+          <Typography variant="h6" gutterBottom>
+            Estimated Price: {data.estimatedPrice}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {data.description}
+          </Typography>
+        </CardContent>
+      </Card>
+      
       ))}
 
       {/* Navigation Buttons */}
