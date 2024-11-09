@@ -23,7 +23,6 @@ import MyProfile from './pages/MyProfile.jsx';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import userAtom from './atom/userAtom.js';
-import MyProfile from './pages/MyProfile.jsx';
 
 
 

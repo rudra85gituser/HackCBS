@@ -3,19 +3,22 @@ import { Box, TextField, Button, Typography, Card, CardContent, Container } from
 import { PhotoCamera } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import usePreviewImg from "../hooks/usePreviewImg";
+import ModelData from "./ModelData";
 
 function SellerForm() {
   const navigate = useNavigate();
-  const { imgUrls, handleImageChange, setImgUrls } = usePreviewImg();  
+  const { imgUrls, handleImageChange, setImgUrls } = usePreviewImg();
 
   const [formData, setFormData] = useState({
     userName: '',
     userPhone: '',
     userAddress: '',
     productName: '',
+    productPrice: '',
     productDescription: '',
-    itemImages: [],
+    itemImages: [], // Store image URLs here
   });
+  const [modelData,setmodelData]=useState([])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -55,19 +58,29 @@ function SellerForm() {
     }));
   };
 
+  // Update formData with image URLs when imgUrls changes
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      itemImages: imgUrls, // Store the image preview URLs
+    }));
+  }, [imgUrls]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
+
     try {
-      const res = await fetch("/api/user/sellerInfoFill", {
+      const res = await fetch("/api/user/seller", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
-      const data = await res.json();
-      console.log(data);
+      });
+      const data  = await res.json();
+      console.log(data.suggestions);
+      setmodelData(data.suggestions)
     } catch (error) {
       console.log(error);
     }
@@ -78,8 +91,11 @@ function SellerForm() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ marginTop: 12 }}>
+    <>
+     {modelData.length>0 && <ModelData modelData={modelData} />}
+     <Container maxWidth="sm" sx={{ marginTop: 12 }}>
       <Card>
+
         <CardContent>
           <Box
             component="form"
@@ -119,12 +135,20 @@ function SellerForm() {
             />
 
             <TextField
+              label="Product Price"
+              name="productPrice"
+              value={formData.productPrice}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+
+            <TextField
               label="Product Name"
               name="productName"
               value={formData.productName}
               onChange={handleChange}
               fullWidth
-              multiline
               required
             />
 
@@ -151,11 +175,7 @@ function SellerForm() {
                 hidden
                 multiple
                 onChange={(e) => {
-                  handleImageChange(e); // call hook's function
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    itemImages: Array.from(e.target.files),
-                  }));
+                  handleImageChange(e);
                 }}
               />
             </Button>
@@ -167,7 +187,12 @@ function SellerForm() {
                   key={index}
                   src={url}
                   alt={`Preview ${index + 1}`}
-                  style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
                 />
               ))}
             </Box>
@@ -179,7 +204,7 @@ function SellerForm() {
               size="large"
               fullWidth
               sx={{ mt: 2 }}
-              onClick={handleModelData}
+              onClick={handleSubmit}
             >
               Continue to Sell
             </Button>
@@ -187,6 +212,8 @@ function SellerForm() {
         </CardContent>
       </Card>
     </Container>
+    </>
+
   );
 }
 

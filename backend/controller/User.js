@@ -52,50 +52,55 @@ const buyerInfoFill = async(req,res) => {
 
 
 
-const sellerInfoFill = async(req,res) => {
-    const {name,address,phone,Pname,Pdesc,Pprice,Pimage,image} = req.body;
-    const id  = req.user?._id; 
+const sellerInfoFill = async (req, res) => {
+    const { userName, userAddress, userPhone, productName, productDescription, productPrice, itemImages, image } = req.body;
+    const id = req.user?._id;
     const SearchSeller = await Seller.findById(id);
-    if(SearchSeller){
-        if (Array.isArray(Pimage)) {
-            for (let i = 0; i < Pimage.length; i++) {
-                if (typeof Pimage[i] === "string" && Pimage[i].trim() !== "") {
+
+    if (SearchSeller) {
+        const uploadedImages = [];  
+
+        if (Array.isArray(itemImages)) {
+            for (const img of itemImages) {
+                console.log(typeof img, "img");
+                if (typeof img === "string" && img.trim() !== "") {
                     try {
-                        const uploadedResponse = await cloudinary.uploader.upload(Pimage[i]);
-                        Pimage[i] = uploadedResponse.secure_url;
+                        const uploadedResponse = await cloudinary.uploader.upload(img);
+                        uploadedImages.push(uploadedResponse.secure_url); 
                     } catch (error) {
                         console.error("Error uploading image:", error);
                     }
                 }
             }
         }
+        console.log(uploadedImages,"uploadedImages")
         const product = await Product.create({
-            name:Pname,
-            description:Pdesc,
-            price:Pprice,
-            image:Pimage
-        })
-        if (image) {
-			const uploadedResponse = await cloudinary.uploader.upload(image);
-			image = uploadedResponse.secure_url;
-		}
-        SearchSeller.name = name
-        SearchSeller.email = email
-        SearchSeller.address = address
-        SearchSeller.image = image
-        SearchSeller.phone = phone
-        SearchSeller.Product.push(product._id)
-        const seller = await SearchSeller.save()
+            name: productName,
+            description: productDescription,
+            price: productPrice,
+            image: uploadedImages  
+        });
 
-        // now get the suggestion herre fetch the suggestion and pass the image or location
-        // Fetch suggestions for recycling using the classify-scrap endpoint
+        let uploadedImageURL = "";
+        if (image) {
+            const uploadedResponse = await cloudinary.uploader.upload(image);
+            uploadedImageURL = uploadedResponse.secure_url;
+        }
+
+        SearchSeller.name = userName;
+        SearchSeller.email,
+        SearchSeller.address = userAddress;
+        SearchSeller.image = uploadedImageURL;
+        SearchSeller.phone = userPhone;
+        SearchSeller.Product.push(product._id);
+
+        const seller = await SearchSeller.save();
+        console.log(uploadedImageURL, "uploadedImages");
         try {
             const response = await fetch("http://127.0.0.1:8000/classify-scrap/", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(Pimage), // Pass the array of product images
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(uploadedImages),
             });
 
             if (!response.ok) {
@@ -104,20 +109,16 @@ const sellerInfoFill = async(req,res) => {
             }
 
             const suggestions = await response.json();
-
-            res.status(201).json({
-                seller,
-                suggestions,
-            });
+            res.status(201).json({ seller, suggestions });
         } catch (error) {
             console.error("Error fetching suggestions:", error);
             res.status(500).json({ message: "An error occurred while fetching suggestions" });
         }
+    } else {
+        res.status(404).json({ message: "Seller not found" });
     }
-    else{
-        res.status(404).json({ message: "Seller not found" })
-    }
-}
+};
+
 
 const fetchProduct = async(req,res) => {
     try {
