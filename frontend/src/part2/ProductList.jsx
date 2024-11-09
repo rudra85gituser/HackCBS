@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Button, Container } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Button, Container, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
@@ -45,20 +45,21 @@ const ProductList = () => {
 
   // Render each product card
   const renderProductCard = (product) => (
-    <Card key={product.id} sx={{ display: 'flex', mb: 4 }}>
+    <Card key={product.id} sx={{ display: 'flex', mb: 4, boxShadow: 3, borderRadius: 2 }}>
       {/* Product Image */}
-      <Card sx={{ display: 'flex' }}>
       <CardMedia
         component="img"
-        sx={{ width: 250 }}
+        sx={{ width: 250, borderRadius: '8px 0 0 8px' }}
         image={product.image}
         alt={`${product.name} image`}
-      /></Card>
+      />
 
       {/* Product Details */}
-      <CardContent sx={{ flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', p: 3 }}>
+      <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', p: 3 }}>
         <Box>
-          <Typography variant="h6">{product.name}</Typography>
+          <Typography variant="h6" fontWeight="bold">
+            {product.name}
+          </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
             {product.description}
           </Typography>
@@ -78,21 +79,26 @@ const ProductList = () => {
   );
 
   return (
-
-    <Container maxWidth="md" sx={{ marginTop: 12 }}>
-      {/* Sell Product Button at the top right corner */}
-      
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+    <Container maxWidth="md" sx={{ marginTop: 20 }}>
+      {/* Search and Sell Section */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <TextField
+          label="Search products"
+          variant="outlined"
+          fullWidth
+          sx={{ maxWidth: '70%', mr: 2 }}
+          style={{background:"white"}}
+        />
         <Button variant="contained" color="primary" onClick={handleSell}>
           Sell Your Product
         </Button>
       </Box>
 
       {/* Page Title */}
-      <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
+      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ textAlign: 'center' }}>
         Product List
       </Typography>
-      
+
       {/* Render Product Cards */}
       {products.map(renderProductCard)}
     </Container>

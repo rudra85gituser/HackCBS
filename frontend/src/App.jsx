@@ -19,6 +19,7 @@ import VendorList from "./part1/VendorList.jsx";
 import SellerOLXForm from "./part2/Seller.jsx";
 import BuyerOLXForm from "./part2/Buyer.jsx";
 import ProductList from "./part2/ProductList.jsx";
+import MyProfile from './pages/MyProfile.jsx';
 
 
 
@@ -46,7 +47,8 @@ function App() {
             <Route path="/part2/Seller" element={<SellerOLXForm />} />
             <Route path="/part2/Buyer" element={<BuyerOLXForm />} />
             <Route path="/part2/ProductList" element={<ProductList />} />
-
+    
+            <Route path='/MyProfile' element={<MyProfile/>}/>
 
           </Routes>
         </div>
