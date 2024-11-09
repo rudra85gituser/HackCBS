@@ -36,49 +36,49 @@ const ProductLists = () => {
 
   // Render each product card with details and AI model data
   const renderProductCard = (product) => (
-    <Card key={product.id} sx={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', mb: 4, padding: 2 }}>
-      <CardMedia
-        component="img"
-        sx={{ width: 250, height: 200, marginLeft: 2 }}
-        image={product.image}
-        alt="Product image"
-      />
-      <CardContent sx={{ flex: 1 }}>
-        <Typography variant="h6" gutterBottom>
-          User Description:
-        </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          {product.userDescription}
-        </Typography>
+    <Card key={product.id} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mb: 4, padding: 2 }}>
+  <CardMedia
+    component="img"
+    sx={{ width: 250, height: 200, marginRight: 2 }}
+    image={product.image}
+    alt="Product image"
+  />
+  <CardContent sx={{ flex: 2 }}>
+    <Typography variant="h6" gutterBottom>
+      User Description:
+    </Typography>
+    <Typography variant="body2" color="text.secondary" gutterBottom>
+      {product.userDescription}
+    </Typography>
 
-        <Typography variant="h6" gutterBottom>
-          Model-Generated Description:
-        </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          {product.modelGeneratedDescription}
-        </Typography>
+    <Typography variant="h6" gutterBottom>
+      Model-Generated Description:
+    </Typography>
+    <Typography variant="body2" color="text.secondary" gutterBottom>
+      {product.modelGeneratedDescription}
+    </Typography>
 
-        <Typography variant="h6" gutterBottom>
-          User-Provided Price:
-        </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          {product.userProvidedPrice}
-        </Typography>
+    <Typography variant="h6" gutterBottom>
+      User-Provided Price:
+    </Typography>
+    <Typography variant="body2" color="text.secondary" gutterBottom>
+      {product.userProvidedPrice}
+    </Typography>
 
-        <Typography variant="h6" gutterBottom>
-          Model-Estimated Price:
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {product.modelEstimatedPrice}
-        </Typography>
+    <Typography variant="h6" gutterBottom>
+      Model-Estimated Price:
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      {product.modelEstimatedPrice}
+    </Typography>
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
-          <Button variant="contained" color="secondary" onClick={() => handleBuy(product.id)}>
-            Buy
-          </Button>
-        </Box>
-      </CardContent>
-    </Card>
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+      <Button variant="contained" color="secondary" onClick={() => handleBuy(product.id)}>
+        Buy
+      </Button>
+    </Box>
+  </CardContent>
+</Card>
   );
 
   return (
@@ -93,7 +93,7 @@ const ProductLists = () => {
           label="Search products"
           variant="outlined"
           fullWidth
-          sx={{ maxWidth: '70%', mr: 2 }}
+          sx={{ maxWidth: '80%', mr: 2 }}
           style={{background:"white"}}
         />
         <Button variant="contained" color="primary" onClick={handleSell}>

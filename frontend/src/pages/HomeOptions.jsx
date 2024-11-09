@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 /* import hello from "../part1/seller" */
 
 import { useNavigate , useRoutes} from 'react-router-dom';
+import { VoiceChat } from "@mui/icons-material";
+import VoiceflowChat from "./VoiceflowChat";
 
 
 function Options() {
@@ -98,7 +100,9 @@ function Options() {
                 </CardContent>
             </Card>
         </Box>
-
+<div>
+<VoiceflowChat />
+</div>
         </div>
 
 

@@ -49,7 +49,8 @@ const ProductList = () => {
       {/* Product Image */}
       <CardMedia
         component="img"
-        sx={{ width: 250, borderRadius: '8px 0 0 8px' }}
+        sx={{ width: 250, borderRadius: '8px 0 0 8px'}}
+        style={{margin:'8px' }}
         image={product.image}
         alt={`${product.name} image`}
       />
