@@ -80,25 +80,23 @@ const ProductList = () => {
 
   return (
     <Container maxWidth="md" sx={{ marginTop: 20 }}>
-      {/* Search and Sell Section */}
+      
+    
+      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ textAlign: 'center' }}>
+        Product List
+      </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <TextField
           label="Search products"
           variant="outlined"
           fullWidth
-          sx={{ maxWidth: '70%', mr: 2 }}
+          sx={{ maxWidth: '80%', mr: 2 }}
           style={{background:"white"}}
         />
         <Button variant="contained" color="primary" onClick={handleSell}>
           Sell Your Product
         </Button>
       </Box>
-
-      {/* Page Title */}
-      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ textAlign: 'center' }}>
-        Product List
-      </Typography>
-
       {/* Render Product Cards */}
       {products.map(renderProductCard)}
     </Container>
