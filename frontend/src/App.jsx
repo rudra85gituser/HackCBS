@@ -48,7 +48,7 @@ function App() {
             <Route path="/part2/Buyer" element={<BuyerOLXForm />} />
             <Route path="/part2/ProductList" element={<ProductList />} />
     
-            <Route path='/MyProfile' element={<MyProfile/>}/>
+            <Route path="/MyProfile" element={<MyProfile/>}/>
 
           </Routes>
         </div>

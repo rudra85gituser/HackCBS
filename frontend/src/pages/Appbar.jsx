@@ -16,7 +16,7 @@ function Appbar() {
   };
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate('/MyProfile');
   };
 
   return (

@@ -11,12 +11,14 @@ const MyProfile = () => {
   }
 
   return (
-    <Box
+    <Box 
       display="flex"
       flexDirection="column"
       alignItems="center"
       p={3}
-      sx={{ maxWidth: '600px', margin: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px' }}
+      sx={{ maxWidth: '600px', margin: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px',
+        marginTop:'180px'
+       }}
     >
       <Avatar
         src={user.picture}
