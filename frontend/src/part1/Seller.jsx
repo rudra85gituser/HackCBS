@@ -1,38 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button, Typography, Card, CardContent, Container } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
-import { useNavigate , useRoutes} from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Box, TextField, Button, Typography, Card, CardContent, Container } from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import usePreviewImg from "../hooks/usePreviewImg";
 
 function SellerForm() {
-
   const navigate = useNavigate();
-   
-
-      const handleModelData = () => {
-        navigate('/part1/ModelData');
-      };
-
+  const { imgUrls, handleImageChange, setImgUrls } = usePreviewImg();  
 
   const [formData, setFormData] = useState({
     userName: '',
-    userEmail: '',
     userPhone: '',
     userAddress: '',
+    productName: '',
     productDescription: '',
     itemImages: [],
   });
 
   useEffect(() => {
-    // Simulate fetching user data from an API or local storage
     const fetchUserData = async () => {
-      const userData = await getUserData(); // Replace with actual API call or data source
+      const userData = await getUserData();
 
       if (userData) {
         setFormData({
           userName: userData.userName || '',
-          userEmail: userData.userEmail || '',
           userPhone: userData.userPhone || '',
           userAddress: userData.userAddress || '',
+          productName: userData.productName || '',
           productDescription: userData.productDescription || '',
           itemImages: userData.itemImages || [],
         });
@@ -43,12 +37,11 @@ function SellerForm() {
   }, []);
 
   const getUserData = async () => {
-    // Replace this with your actual API call or local storage logic
     return {
       userName: 'John Doe',
-      userEmail: 'john.doe@example.com',
       userPhone: '1234567890',
       userAddress: '123 Main St, Springfield',
+      productName: 'iron 35kg',
       productDescription: 'Sample product description',
       itemImages: [],
     };
@@ -62,17 +55,26 @@ function SellerForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData((prevData) => ({
-      ...prevData,
-      itemImages: files,
-    }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form Data:", formData);
+    try {
+      const res = await fetch("/api/user/sellerInfoFill", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form Data:', formData);
+  const handleModelData = () => {
+    navigate("/part1/ModelData");
   };
 
   return (
@@ -81,15 +83,14 @@ function SellerForm() {
         <CardContent>
           <Box
             component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <Typography variant="h5" textAlign="center" gutterBottom>
               Sell Your Recyclable Items
             </Typography>
 
             <TextField
-              label="Username"
+              label="Name"
               name="userName"
               value={formData.userName}
               onChange={handleChange}
@@ -98,19 +99,8 @@ function SellerForm() {
             />
 
             <TextField
-              label="Email"
-              name="userEmail"
-              type="email"
-              value={formData.userEmail}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-
-            <TextField
-              label="Phone Number"
+              label="Phone"
               name="userPhone"
-              type="tel"
               value={formData.userPhone}
               onChange={handleChange}
               fullWidth
@@ -126,6 +116,16 @@ function SellerForm() {
               required
               multiline
               rows={3}
+            />
+
+            <TextField
+              label="Product Name"
+              name="productName"
+              value={formData.productName}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              required
             />
 
             <TextField
@@ -150,9 +150,27 @@ function SellerForm() {
                 accept="image/*"
                 hidden
                 multiple
-                onChange={handleImageChange}
+                onChange={(e) => {
+                  handleImageChange(e); // call hook's function
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    itemImages: Array.from(e.target.files),
+                  }));
+                }}
               />
             </Button>
+
+            {/* Image Previews */}
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
+              {imgUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Preview ${index + 1}`}
+                  style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }}
+                />
+              ))}
+            </Box>
 
             <Button
               type="submit"
@@ -161,7 +179,8 @@ function SellerForm() {
               size="large"
               fullWidth
               sx={{ mt: 2 }}
-              onClick={handleModelData}>
+              onClick={handleModelData}
+            >
               Continue to Sell
             </Button>
           </Box>

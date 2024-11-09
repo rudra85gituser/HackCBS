@@ -8,12 +8,14 @@ import { v2 as cloudinary } from "cloudinary";
 const Adduser = async (req, res) => {
     // const { name, email, password, address, phone } = req.body
     try {
-        const {name,email,password} = req.body
-        if(!name || !email || !password){
+        const {email} = req.body
+        console.log("wokring",req.body)
+
+        if(!email){
             return res.status(400).json({ message: "All fields are required" })
         }
-        const buyer = await Buyer.create({ name, email, password })
-        const seller = await Seller.create({ name, email, password })
+        const buyer = await Buyer.create({  email })
+        const seller = await Seller.create({ email })
         if(buyer && seller){
             generateTokenAndSetCookie(buyer._id, res);
             generateTokenAndSetCookie(seller._id, res);
@@ -27,12 +29,12 @@ const Adduser = async (req, res) => {
 
 const buyerInfoFill = async(req,res) => {
     try {
-        const { name, email, password, address, phone } = req.body
+        const { name, password, address, phone } = req.body
         const id = req.user._id;
         const SearchBuyer = await Buyer.findById(id);
         if(SearchBuyer){
             SearchBuyer.name = name
-            SearchBuyer.email = email
+            SearchBuyer.email,
             SearchBuyer.password = password
             SearchBuyer.address = address
             SearchBuyer.phone = phone
@@ -51,7 +53,7 @@ const buyerInfoFill = async(req,res) => {
 
 
 const sellerInfoFill = async(req,res) => {
-    const {name,email,address,phone,Pname,Pdesc,Pprice,Pimage,image} = req.body;
+    const {name,address,phone,Pname,Pdesc,Pprice,Pimage,image} = req.body;
     const id  = req.user?._id; 
     const SearchSeller = await Seller.findById(id);
     if(SearchSeller){
