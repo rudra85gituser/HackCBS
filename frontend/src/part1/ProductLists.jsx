@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Button, Container } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Button, Container,TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const ProductLists = () => {
@@ -82,16 +82,24 @@ const ProductLists = () => {
   );
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: 8 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant="contained" color="primary" onClick={handleSell}>
-          Sell Your Product
-        </Button>
-      </Box>
+    <Container maxWidth="md" sx={{ marginTop: 15 }}>
+      
 
       <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
         Product List
       </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <TextField
+          label="Search products"
+          variant="outlined"
+          fullWidth
+          sx={{ maxWidth: '70%', mr: 2 }}
+          style={{background:"white"}}
+        />
+        <Button variant="contained" color="primary" onClick={handleSell}>
+          Sell Your Product
+        </Button>
+      </Box>
 
       {products.map(renderProductCard)}
     </Container>
