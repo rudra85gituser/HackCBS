@@ -14,7 +14,6 @@ function SellerForm() {
     userPhone: '',
     userAddress: '',
     productName: '',
-    productPrice: '',
     productDescription: '',
     itemImages: [], // Store image URLs here
   });
@@ -132,15 +131,6 @@ function SellerForm() {
               required
               multiline
               rows={3}
-            />
-
-            <TextField
-              label="Product Price"
-              name="productPrice"
-              value={formData.productPrice}
-              onChange={handleChange}
-              fullWidth
-              required
             />
 
             <TextField

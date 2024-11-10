@@ -10,10 +10,7 @@ const ProductSchema = new Schema({
         type: String,
         required: true
     },
-    price:{
-        type: Number,
-        required: true
-    },
+
     image:[{
         type: String,
         required: true
@@ -23,6 +20,10 @@ const ProductSchema = new Schema({
         ref: "Seller"
     },
     rating:{
+        type: Number,
+        default: 0
+    },
+    c:{
         type: Number,
         default: 0
     }

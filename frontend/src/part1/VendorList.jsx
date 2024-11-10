@@ -16,7 +16,7 @@ const VendorList = () => {
           vendorEmail: 'jane.doe@example.com',
           vendorAddress: '456 Market St, Springfield',
           tradingDescription: 'Example description of trading activity',
-          shopImage: '/path-to-shop-image.jpg', // Replace with actual image path
+          shopImage: '/path-to-shop-image.jpg', 
         },
         {
           id: 2,
@@ -26,11 +26,11 @@ const VendorList = () => {
           vendorEmail: 'john.smith@example.com',
           vendorAddress: '789 Elm St, Metropolis',
           tradingDescription: 'Another example of a shop’s activity',
-          shopImage: '/path-to-shop-image-2.jpg', // Replace with actual image path
+          shopImage: '/path-to-shop-image-2.jpg',  
         },
       ];
 
-      setVendors(vendorData); // Replace with actual API response if needed
+      setVendors(vendorData); 
     };
 
     fetchVendors();

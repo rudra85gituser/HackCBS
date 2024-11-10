@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button, Typography, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom'; // for navigation
+import { useNavigate } from 'react-router-dom';
+import usePreviewImg from '../hooks/usePreviewImg';
 
 function SellerOLXForm() {
   const [formData, setFormData] = useState({
@@ -9,26 +10,25 @@ function SellerOLXForm() {
     sellerPhone: '',
     sellerEmail: '',
     sellerAddress: '',
-    productDescription: '',
-    productImages: [],
+    productName: '',  // New field for product name
+    productDescription: '', 
   });
 
-  const [openPopup, setOpenPopup] = useState(false);  // State to control the modal visibility
-  const navigate = useNavigate();  // Navigation hook
+  const [openPopup, setOpenPopup] = useState(false);
+  const navigate = useNavigate();
+  const { handleImageChange, imgUrls, setImgUrls } = usePreviewImg();
 
   useEffect(() => {
-    // Simulate fetching user data from an API or local storage
     const fetchUserData = async () => {
-      const userData = await getUserData(); // Replace with actual API call or data source
-
+      const userData = await getUserData();
       if (userData) {
         setFormData({
           sellerName: userData.sellerName || '',
           sellerPhone: userData.sellerPhone || '',
           sellerEmail: userData.sellerEmail || '',
           sellerAddress: userData.sellerAddress || '',
+          productName: userData.productName || '',  // Set initial productName if available
           productDescription: userData.productDescription || '',
-          productImages: userData.productImages || [],
         });
       }
     };
@@ -37,14 +37,13 @@ function SellerOLXForm() {
   }, []);
 
   const getUserData = async () => {
-    // Replace this with your actual API call or data source
     return {
       sellerName: 'John Doe',
       sellerPhone: '1234567890',
       sellerEmail: 'john.doe@example.com',
       sellerAddress: '123 Main St, Springfield',
+      productName: 'Sample Product',  // Initial product name
       productDescription: 'Sample product description',
-      productImages: [],
     };
   };
 
@@ -56,35 +55,50 @@ function SellerOLXForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData((prevData) => ({
-      ...prevData,
-      productImages: files,
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-    setOpenPopup(true);  // Show the modal after form submission
+
+    // Prepare data to match backend requirements
+    const requestData = {
+      userName: formData.sellerName,
+      userAddress: formData.sellerAddress,
+      userPhone: formData.sellerPhone,
+      productName: formData.productName,
+      productDescription: formData.productDescription,
+      itemImages: imgUrls, 
+    };
+
+    try {
+      const response = await fetch("/api/user/seller/charity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Response Data:', data);
+        setOpenPopup(true);
+      } else {
+        console.error("Failed to submit data:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const handleClosePopup = () => {
-    setOpenPopup(false);  // Close the modal
+    setOpenPopup(false);
   };
 
   const handleViewProduct = () => {
-    // Logic to view the product (Redirect to the product detail page or modal)
-    console.log('View product logic');
     handleClosePopup();
-    navigate('/part2/ProductList');  // Redirect to the product list page
+    navigate('/part2/ProductList');
   };
 
   const handleGoHome = () => {
-    // Logic to go to the home page
     handleClosePopup();
-    navigate('/home');  // Redirect to home
+    navigate('/home');
   };
 
   return (
@@ -141,6 +155,15 @@ function SellerOLXForm() {
             />
 
             <TextField
+              label="Product Name"
+              name="productName"
+              value={formData.productName}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+
+            <TextField
               label="Product Description"
               name="productDescription"
               value={formData.productDescription}
@@ -165,6 +188,18 @@ function SellerOLXForm() {
                 onChange={handleImageChange}
               />
             </Button>
+
+            {/* Image Preview Section */}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+              {imgUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Product Preview ${index + 1}`}
+                  style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                />
+              ))}
+            </Box>
 
             <Button
               type="submit"
