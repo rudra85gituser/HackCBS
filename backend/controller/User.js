@@ -6,7 +6,6 @@ import { v2 as cloudinary } from "cloudinary";
 
 
 const Adduser = async (req, res) => {
-    // const { name, email, password, address, phone } = req.body
     try {
         const {email} = req.body
         console.log("wokring",req.body)
@@ -27,30 +26,103 @@ const Adduser = async (req, res) => {
     }
 }
 
-const buyerInfoFill = async(req,res) => {
+
+
+const buyerInfoFill = async (req, res) => {
     try {
-        const { name, password, address, phone } = req.body
-        const id = req.user._id;
-        const SearchBuyer = await Buyer.findById(id);
-        if(SearchBuyer){
-            SearchBuyer.name = name
-            SearchBuyer.email,
-            SearchBuyer.password = password
-            SearchBuyer.address = address
-            SearchBuyer.phone = phone
-            const buyer = await SearchBuyer.save()
-            res.status(201).json({ buyer })
+      const { shopName, vendorAddress, vendorPhone, tradingDescription, shopImage } = req.body;
+  
+        console.log("shopImage",shopImage);
+  
+  
+      // Find or create buyer
+      const id = req.user._id;
+      const SearchBuyer = await Buyer.findById(id);
+      const SearchSeller = await Seller.findById(id);
+  
+      if (SearchBuyer) {
+        if(shopImage){
+            var uploadedResponse = await cloudinary.uploader.upload(shopImage);
+            var  imageUrl = uploadedResponse.secure_url;
         }
-        else{
-            res.status(404).json({ message: "Buyer not found" })
+        SearchBuyer.name = shopName;
+        SearchBuyer.address = vendorAddress;
+        SearchBuyer.phone = vendorPhone;
+        SearchBuyer.image = imageUrl||null;
+        const buyer = await SearchBuyer.save();
+  
+        return res.status(201).json({ buyer });
+      } else {
+        if(shopImage){
+            var uploadedResponse = await cloudinary.uploader.upload(shopImage);
+            var  imageUrl = uploadedResponse.secure_url;
         }
+        const buyer = await Buyer.create({
+          name: shopName,
+          address: vendorAddress,
+          phone: vendorPhone,
+          image: imageUrl||null,
+          email: SearchSeller.email,
+        });
+  
+        return res.status(201).json({ buyer });
+      }
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message })
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
-}
+  };
+  
 
+  const charitySeller = async (req, res) => {
+    const { userName, userAddress, userPhone, productName, productDescription, itemImages, image } = req.body;
+    const id = req.user?._id;
+    const SearchSeller = await Seller.findById(id);
 
+    if (SearchSeller) {
+        const uploadedImages = [];  
+
+        if (Array.isArray(itemImages)) {
+            for (const img of itemImages) {
+                console.log(typeof img, "img");
+                if (typeof img === "string" && img.trim() !== "") {
+                    try {
+                        const uploadedResponse = await cloudinary.uploader.upload(img);
+                        uploadedImages.push(uploadedResponse.secure_url); 
+                    } catch (error) {
+                        console.error("Error uploading image:", error);
+                    }
+                }
+            }
+        }
+        console.log(uploadedImages,"uploadedImages")
+        const product = await Product.create({
+            name: productName,
+            c:1,
+            description: productDescription,
+            image: uploadedImages  
+        });
+
+        let uploadedImageURL = "";
+        if (image) {
+            const uploadedResponse = await cloudinary.uploader.upload(image);
+            uploadedImageURL = uploadedResponse.secure_url;
+        }
+
+        SearchSeller.name = userName;
+        SearchSeller.email,
+        SearchSeller.address = userAddress;
+        SearchSeller.image = uploadedImageURL;
+        SearchSeller.phone = userPhone;
+        SearchSeller.Product.push(product._id);
+
+        const seller = await SearchSeller.save();
+        console.log(uploadedImageURL, "uploadedImages");
+        res.status(201).json({ seller });
+    } else {
+        res.status(404).json({ message: "Seller not found" });
+    }
+  }
 
 const sellerInfoFill = async (req, res) => {
     const { userName, userAddress, userPhone, productName, productDescription, itemImages, image } = req.body;
@@ -121,7 +193,22 @@ const sellerInfoFill = async (req, res) => {
 
 const fetchProduct = async(req,res) => {
     try {
-        const getProduct = await Product.find().populate("seller")
+        const getProduct = await Product.find({ 
+            c:1
+        }).populate("seller")
+        console.log(getProduct,"getProduct");
+        res.status(200).json(getProduct)
+    } catch (error) {
+        console.log(error)
+        res.status(404).json(error)
+    }
+}
+
+const fetchProductcharity = async(req,res) => {
+    try {
+        const getProduct = await Product.find({ 
+            c:0
+        }).populate("seller")
         console.log(getProduct,"getProduct");
         res.status(200).json(getProduct)
     } catch (error) {
@@ -209,4 +296,16 @@ const giveFeedback = async (req, res) => {
     }
 };
 
-export { Adduser, ShowProduct, Logout, buyerInfoFill, giveFeedback, searchProduct, sellerInfoFill, fetchProduct }
+const fetchVender = async(req,res) => {
+    try {
+        const AllVender = await Buyer.find()
+        console.log(AllVender,"AllVender");
+
+        res.status(200).json(AllVender)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export { Adduser, fetchVender, fetchProductcharity, ShowProduct, Logout, charitySeller, buyerInfoFill, giveFeedback, searchProduct, sellerInfoFill, fetchProduct }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import options1 from "../assets/options1.png";
 import options2 from "../assets/options2.png";
@@ -19,6 +19,7 @@ import VoiceflowChat from "./VoiceflowChat";
 function Options() {
     const navigate = useNavigate();
    
+
 
     const handleButtonClick1 = () => {
        navigate('/part1/Seller'); 

@@ -16,7 +16,6 @@ function SellerForm() {
     userPhone: '',
     userAddress: '',
     productName: '',
-    productPrice: '',
     productDescription: '',
     itemImages: [], // Store image URLs here
   });

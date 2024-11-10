@@ -47,9 +47,6 @@ const ModelData = ({modelData}) => {
               Recyclable: {data.recyclable ? "Yes" : "No"}
             </Typography>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              Sellable: {data.sellable ? "Yes" : "No"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
               Recycling Rules:
             </Typography>
             <ul style={{ paddingLeft: '20px', margin: 0 }}>
