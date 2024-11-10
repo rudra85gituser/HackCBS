@@ -4,12 +4,16 @@ from typing import List, Dict
 from PIL import Image
 import os
 import re
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import logging
 from io import BytesIO
 import requests
 import geocoder
 import google.generativeai as genai
+
+
+
 
 # Configure the Generative AI API
 os.environ["API_KEY"] = "AIzaSyBkidkQ81wlIwzhwMeYDX8ZrNyjlARPRfI"  # Replace with your actual API key
@@ -86,7 +90,13 @@ RECYCLING_RULES = {
 
 # Initialize the FastAPI app
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],   
+)
 # Define input data models
 class Feedback(BaseModel):
     text: str

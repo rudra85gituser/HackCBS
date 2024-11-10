@@ -16,7 +16,7 @@ const VendorList = () => {
           vendorEmail: 'jane.doe@example.com',
           vendorAddress: '456 Market St, Springfield',
           tradingDescription: 'Example description of trading activity',
-          shopImage: '/path-to-shop-image.jpg', 
+          shopImage: 'https://etimg.etb2bimg.com/photo/76159933.cms', 
         },
         {
           id: 2,
@@ -26,7 +26,7 @@ const VendorList = () => {
           vendorEmail: 'john.smith@example.com',
           vendorAddress: '789 Elm St, Metropolis',
           tradingDescription: 'Another example of a shop’s activity',
-          shopImage: '/path-to-shop-image-2.jpg',  
+          shopImage: 'https://bangaloremart.in/wp-content/uploads/2021/11/Scrap-Dealers-and-Buyers-in-Bangalore-9945555582-2048x662.jpg',  
         },
       ];
 

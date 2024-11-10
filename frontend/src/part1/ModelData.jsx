@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Button, Container,TextField } from '@mui/material';
+import React from 'react';
+import { Box, Card, CardContent, CardMedia, Typography, Button, Container, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { marked } from 'marked';
 
-const ModelData = ({modelData}) => {
+const ModelData = ({ modelData }) => {
   const navigate = useNavigate();
 
   const handleProductList = () => {
@@ -14,11 +15,10 @@ const ModelData = ({modelData}) => {
   };
   
   return (
-    <Container maxWidth="md" sx={{ marginTop: 15, }}>
+    <Container maxWidth="md" sx={{ marginTop: 15 }}>
       <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
         Review of Processed Images
       </Typography>
-      
       
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <TextField
@@ -26,11 +26,10 @@ const ModelData = ({modelData}) => {
           variant="outlined"
           fullWidth
           sx={{ maxWidth: '100%', mr: 2 }}
-          style={{background:"white"}}
+          style={{ background: "white" }}
         />
-        
       </Box>
-      {/* Render each product in a vertically aligned card with image on the right */}
+
       {modelData && modelData.map((data) => (
         <Card key={data.id} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mb: 4, padding: 2, gap: '150px' }}>
           <CardMedia
@@ -41,8 +40,13 @@ const ModelData = ({modelData}) => {
           />
           <CardContent sx={{ flex: 1 }} style={{ marginRight: '0px' }}>
             <Typography variant="h6" gutterBottom>
-              Recommendation: {data.recommendation || "No recommendation available"}
+              Recommendation:
             </Typography>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: marked.parse(data.recommendation || "No recommendation available"),
+              }}
+            />
             <Typography variant="body2" color="text.secondary" gutterBottom>
               Recyclable: {data.recyclable ? "Yes" : "No"}
             </Typography>
@@ -62,7 +66,6 @@ const ModelData = ({modelData}) => {
         </Card>
       ))}
 
-      {/* Navigation Buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, marginTop: 4 }}> 
         <Button variant="outlined" color="secondary" onClick={handleGoBack}>
           Re-upload Images
