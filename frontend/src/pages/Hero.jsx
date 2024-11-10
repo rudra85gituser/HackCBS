@@ -7,7 +7,7 @@ function Hero() {
     return (
         <>
             {/* Hero Section */}
-            <Box sx={{ padding: 3, marginTop: '50px', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ padding: 3, marginTop: '150px', display: 'flex', justifyContent: 'center' }}>
                 <Card sx={{ display: 'flex', maxWidth: 1200 }}>
                     
                     {/* Left-aligned Image */}

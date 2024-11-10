@@ -93,7 +93,7 @@ function SellerForm() {
   return (
     <>
      {modelData.length>0 && <ModelData modelData={modelData} />}
-     <Container maxWidth="sm" sx={{ marginTop: 12 }}>
+     <Container maxWidth="sm" sx={{ marginTop: 18 }}>
       <Card>
 
         <CardContent>

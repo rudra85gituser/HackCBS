@@ -20,15 +20,11 @@ import SellerOLXForm from "./part2/Seller.jsx";
 import BuyerOLXForm from "./part2/Buyer.jsx";
 import ProductList from "./part2/ProductList.jsx";
 import MyProfile from './pages/MyProfile.jsx';
-<<<<<<< HEAD
+
 import Contact from './pages/Contact.jsx';
-=======
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import userAtom from './atom/userAtom.js';
->>>>>>> 14b899136770f6e0ee38267ecbf1ce5d78983281
-
-
 
 function App() {
   const { isAuthenticated,user } = useAuth0();

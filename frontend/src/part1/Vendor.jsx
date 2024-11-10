@@ -82,7 +82,7 @@ function VendorForm() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ marginTop: 12 }}>
+    <Container maxWidth="sm" sx={{ marginTop: 18 }}>
       <Card>
         <CardContent>
           <Box

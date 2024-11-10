@@ -4,7 +4,7 @@ import { Mail, Phone, Linkedin, Twitter } from 'lucide-react';
 const teamMembers = [
   {
     name: "Rudra yadav",
-    role: "CEO",
+    // role: "CEO",
     photo: "/team/rudra.png",
     email: "realrudra@raddiRaja.com",
     phone: "+91 63932 76396",
@@ -13,7 +13,7 @@ const teamMembers = [
   },
   {
     name: "Aryan Mittal",
-    role: "COO",
+    // role: "COO",
     photo: "/team/aryan.png",
     email: "mittalaryan932@raddiRaja.com",
     phone: "+91 81096 03174",
@@ -22,7 +22,7 @@ const teamMembers = [
   },
   {
     name: "Sanatan Kahemeriya",
-    role: "CTO",
+    // role: "CTO",
     photo: "/team/sanatan.png",
     email: "sanatan@kachraddiRaju.com",
     phone: "+91 7898009986",
@@ -31,7 +31,7 @@ const teamMembers = [
   },
   {
     name: "Sagar Seth",
-    role: "CMO",
+    // role: "CMO",
     photo: "/team/sagar.png",
     email: "sagar@raddiRaja.com",
     phone: "+91 98765 43213",

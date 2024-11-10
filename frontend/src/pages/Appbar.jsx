@@ -134,13 +134,13 @@ function Appbar() {
           )}
         </Toolbar>
       </AppBar>
-      {!isAuthenticated && (
-        <Box sx={{ textAlign: 'center', fontWeight: 900, mt: 12 }} >
+      {/* {!isAuthenticated && (
+        <Box sx={{ textAlign: 'center', fontWeight: 900, mt: 16 }} >
           <Typography sx={{ fontSize: '20px', fontWeight: 700 }} >
             Sign-up to enjoy our Services
           </Typography>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 }
