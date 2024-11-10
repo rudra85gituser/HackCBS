@@ -3,7 +3,7 @@ import logo from "../assets/logo2.png";
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Toolbar, Typography, Box, AppBar, Button, IconButton } from '@mui/material';
-import { assets } from "../assets/assests.js";
+import { assets } from "../assets/assets.js";
 
 function Appbar() {
   const navigate = useNavigate();
@@ -135,8 +135,8 @@ function Appbar() {
         </Toolbar>
       </AppBar>
       {!isAuthenticated && (
-        <Box sx={{ textAlign: 'center', fontWeight: 900, mt: 10 }}>
-          <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>
+        <Box sx={{ textAlign: 'center', fontWeight: 900, mt: 12 }} >
+          <Typography sx={{ fontSize: '20px', fontWeight: 700 }} >
             Sign-up to enjoy our Services
           </Typography>
         </Box>

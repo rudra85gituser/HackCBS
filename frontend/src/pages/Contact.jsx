@@ -5,37 +5,37 @@ const teamMembers = [
   {
     name: "Rudra yadav",
     role: "CEO",
-    photo: "/team/john-doe.jpg",
+    photo: "/team/rudra.png",
     email: "realrudra@raddiRaja.com",
-    phone: "+91 98765 43210",
-    linkedin: "https://linkedin.com/in/johndoe",
-    twitter: "https://twitter.com/johndoe"
+    phone: "+91 63932 76396",
+    linkedin: "https://www.linkedin.com/in/rudra-yadav/",
+    twitter: "https://x.com/YadavRudra68987"
   },
   {
     name: "Aryan Mittal",
     role: "COO",
-    photo: "/team/jane-smith.jpg",
+    photo: "/team/aryan.png",
     email: "mittalaryan932@raddiRaja.com",
-    phone: "+91 98765 43211",
-    linkedin: "https://linkedin.com/in/janesmith",
-    twitter: "https://twitter.com/janesmith"
+    phone: "+91 81096 03174",
+    linkedin: "https://www.linkedin.com/in/aryan-mittal-911800214/",
+    twitter: "https://x.com/mittalaryan932"
   },
   {
-    name: "Sanatan kahemeriya",
+    name: "Sanatan Kahemeriya",
     role: "CTO",
-    photo: "/team/mike-johnson.jpg",
+    photo: "/team/sanatan.png",
     email: "sanatan@kachraddiRaju.com",
-    phone: "+91 98765 43212",
-    linkedin: "https://linkedin.com/in/mikejohnson",
+    phone: "+91 7898009986",
+    linkedin: "https://www.linkedin.com/in/sanatank/",
     twitter: "https://twitter.com/mikejohnson"
   },
   {
     name: "Sagar Seth",
     role: "CMO",
-    photo: "/team/sarah-lee.jpg",
+    photo: "/team/sagar.png",
     email: "sagar@raddiRaja.com",
     phone: "+91 98765 43213",
-    linkedin: "https://linkedin.com/in/sarahlee",
+    linkedin: "https://www.linkedin.com/in/sagar-seth-333926287/",
     twitter: "https://twitter.com/sarahlee"
   }
 ];
@@ -94,7 +94,7 @@ export default function Contact() {
       alignItems: 'center'
     }}>
       <div style={{ maxWidth: '1120px', width: '100%', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '3rem' }}>Contact Our Team</h1>
+        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '3rem',marginTop:'60px' }}>Contact Our Team</h1>
         <div style={{
           display: 'grid',
           gap: '2rem',
