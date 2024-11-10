@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connectDB.js";
 import { v2 as cloudinary } from "cloudinary";
-import userRouter from "./Routes/userRouter.js";
+import userRouter from "./Routes/Route.router.js";
 
 dotenv.config();
 connectDB();

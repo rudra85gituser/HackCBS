@@ -1,49 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button, Typography, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Card,
+  CardContent,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import usePreviewImg from '../hooks/usePreviewImg';
 
 function VendorForm() {
   const [formData, setFormData] = useState({
     shopName: '',
-    vendorName: '',
     vendorPhone: '',
-    vendorEmail: '',
     vendorAddress: '',
     tradingDescription: '',
     shopImage: null,
   });
-  const [openDialog, setOpenDialog] = useState(false);  // State to control dialog visibility
+  const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
+  const { handleImageChange, imgUrls, setImgUrls } = usePreviewImg();
 
   useEffect(() => {
-    // Simulate fetching vendor data from an API or local storage
     const fetchVendorData = async () => {
-      const vendorData = await getVendorData(); // Replace with actual API call
-
+      const vendorData = await getVendorData();
       if (vendorData) {
         setFormData({
           shopName: vendorData.shopName || '',
-          vendorName: vendorData.vendorName || '',
           vendorPhone: vendorData.vendorPhone || '',
-          vendorEmail: vendorData.vendorEmail || '',
           vendorAddress: vendorData.vendorAddress || '',
           tradingDescription: vendorData.tradingDescription || '',
           shopImage: vendorData.shopImage || null,
         });
       }
     };
-
     fetchVendorData();
   }, []);
 
   const getVendorData = async () => {
-    // Replace this with your actual API or data source logic
     return {
       shopName: 'Example Shop',
-      vendorName: 'Jane Doe',
       vendorPhone: '9876543210',
-      vendorEmail: 'jane.doe@example.com',
       vendorAddress: '456 Market St, Springfield',
       tradingDescription: 'Example description of trading activity',
       shopImage: null,
@@ -58,26 +62,43 @@ function VendorForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      shopImage: e.target.files[0],
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-    setOpenDialog(true);  // Open the confirmation dialog after form submission
+
+    const data = new FormData();
+    data.append('shopName', formData.shopName);
+    data.append('vendorPhone', formData.vendorPhone);
+    data.append('vendorAddress', formData.vendorAddress);
+    data.append('tradingDescription', formData.tradingDescription);
+
+    if (formData.shopImage) {
+      data.append('shopImage', formData.shopImage);
+    }
+
+    try {
+      const res = await fetch('/api/user/buyer/buy', {
+        method: 'POST',
+        body: data,
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to submit the form');
+      }
+
+      const result = await res.json();
+      console.log('Response from backend:', result);
+      setOpenDialog(true);
+    } catch (error) {
+      console.error('Error during form submission:', error);
+    }
   };
 
   const handleDialogClose = (action) => {
     setOpenDialog(false);
-
     if (action === 'viewShops') {
-      navigate('/part1/VendorList');  // Redirect to shop list page
+      navigate('/part1/VendorList');
     } else if (action === 'goHome') {
-      navigate('/home');  // Redirect to home page
+      navigate('/home');
     }
   };
 
@@ -85,10 +106,7 @@ function VendorForm() {
     <Container maxWidth="sm" sx={{ marginTop: 12 }}>
       <Card>
         <CardContent>
-          <Box
-            component="form"
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-          >
+          <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography variant="h5" textAlign="center" gutterBottom>
               Register Your Shop
             </Typography>
@@ -101,16 +119,6 @@ function VendorForm() {
               fullWidth
               required
             />
-
-            <TextField
-              label="Vendor Name"
-              name="vendorName"
-              value={formData.vendorName}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-
             <TextField
               label="Phone Number"
               name="vendorPhone"
@@ -120,17 +128,6 @@ function VendorForm() {
               fullWidth
               required
             />
-
-            <TextField
-              label="Email"
-              name="vendorEmail"
-              type="email"
-              value={formData.vendorEmail}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-
             <TextField
               label="Address"
               name="vendorAddress"
@@ -141,7 +138,6 @@ function VendorForm() {
               multiline
               rows={3}
             />
-
             <TextField
               label="Description"
               name="tradingDescription"
@@ -163,9 +159,32 @@ function VendorForm() {
                 type="file"
                 accept="image/*"
                 hidden
-                onChange={handleImageChange}
+                onChange={(e) => {
+                  handleImageChange(e);
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    shopImage: e.target.files[0],
+                  }));
+                }}
               />
             </Button>
+
+            {imgUrls.length > 0 && (
+              <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                {imgUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Preview ${index + 1}`}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      objectFit: 'cover',
+                    }}
+                  />
+                ))}
+              </Box>
+            )}
 
             <Button
               type="submit"
@@ -173,6 +192,7 @@ function VendorForm() {
               color="primary"
               size="large"
               fullWidth
+              onClick={handleSubmit}
               sx={{ mt: 2 }}
             >
               Register Shop
@@ -181,7 +201,6 @@ function VendorForm() {
         </CardContent>
       </Card>
 
-      {/* Confirmation Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Registration Successful!</DialogTitle>
         <DialogContent>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import options1 from "../assets/options1.png";
 import options2 from "../assets/options2.png";
@@ -17,6 +17,7 @@ import { useNavigate , useRoutes} from 'react-router-dom';
 function Options() {
     const navigate = useNavigate();
    
+
 
     const handleButtonClick1 = () => {
        navigate('/part1/Seller'); 
