@@ -55,10 +55,10 @@ function Options() {
 
 
                     <Typography variant="h5" gutterBottom>
-                    Indulge in the world of RECYCLABLE TRADE :- Recyclable Waste Marketplace.
+                    Step into the World of Recyclable Trade:
                     </Typography>
                     <Typography variant="body1" sx={{ color: 'text.secondary', marginBottom: 2 }}>
-                        Connect with trusted vendors for fair pricing and accurate weighing of your recyclable household waste. Home $crapper acts as a mediator, ensuring transparency and reliability, helping you earn back value on items like newspapers, plastics, and more, while promoting responsible recycling.
+                    Connect with trusted vendors for fair pricing and accurate weighing of recyclable household waste. Home $crapper ensures transparency and helps you reclaim value from items like newspapers and plastics, supporting responsible recycling.
                     </Typography>
                 </CardContent>
             </Card>
@@ -79,7 +79,7 @@ function Options() {
                
                 <CardContent>
                     <Typography variant="h4" gutterBottom sx={{ display:"flex", justifyContent:'center' }}>
-                    Reuse, Recycle, Reconnect
+                    Charity That Transforms
                     </Typography>
                 <br></br>
                 <div style={{display:"flex", justifyContent:'center' , gap: '100px' }}>
@@ -91,10 +91,10 @@ function Options() {
                 <br></br>
 
                     <Typography variant="h5" gutterBottom>
-                    Indulge in the world of Charitable Goods :-  Give a Second Life to Your Belongings.
+                    Indulge in the world of Charitable Goods :
                     </Typography>
                     <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                        Donate or sell items like books and electronics to people who need them, fostering a sustainable community. Whether donating or selling at low cost, Home $crapper makes it easy to repurpose valuable items and reduce waste.
+                    Give your belongings a second life by donating or selling items like books and electronics to those in need. Home $crapper makes it easy to repurpose valuable items, fostering sustainability and reducing waste.
                     </Typography>
                 </CardContent>
             </Card>
