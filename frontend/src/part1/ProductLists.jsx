@@ -1,102 +1,91 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Button, Container,TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Button, Container,TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const ProductLists = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [purchasedProducts, setPurchasedProducts] = useState([]);  
-  const [feedback, setFeedback] = useState(''); 
-  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false); 
-  const [selectedProduct, setSelectedProduct] = useState(null);  
+  
+  // Sample data combining user and model-generated info
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      userDescription: 'A well-maintained vintage bicycle.',
+      userProvidedPrice: '$100',
+      modelGeneratedDescription: 'Vintage bicycle in great condition with minor scratches.',
+      modelEstimatedPrice: '$120',
+      image: '/path-to-image1.jpg', // Replace with actual image path
+    },
+    {
+      id: 2,
+      userDescription: 'An antique lamp in working order.',
+      userProvidedPrice: '$35',
+      modelGeneratedDescription: 'Antique lamp with minor wear, fully functional.',
+      modelEstimatedPrice: '$40',
+      image: '/path-to-image2.jpg', // Replace with actual image path
+    },
+    // Add more products as needed
+  ]);
 
-  const handleFeedbackSubmit = async () => {
-    if (!selectedProduct) return;
-
-    try {
-      const response = await fetch(`/api/user/Updatefeedback/${selectedProduct}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ feedback }), // Send feedback in request body
-      });
-
-      if (response.ok) {
-        setPurchasedProducts((prev) => [...prev, selectedProduct]); // Mark product as purchased
-        setFeedback(''); // Clear feedback input
-        setIsFeedbackDialogOpen(false); // Close dialog
-      } else {
-        console.error("Failed to submit feedback");
-      }
-    } catch (error) {
-      console.error("Error during feedback submission:", error);
-    }
-  };
-
-  useEffect(()=>{
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch('/api/user/fetchProduct');
-        const data = await res.json();
-        setProducts(data);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchProducts();
-  },[])
   const handleBuy = (productId) => {
-    setSelectedProduct(productId); 
-    setIsFeedbackDialogOpen(true); 
+    navigate('/buyer', { state: { productId } });
   };
+
   const handleSell = () => {
     navigate('/part2/seller');
   };
 
   // Render each product card with details and AI model data
-  const renderProductCard = (product) => {
-    const isPurchased = purchasedProducts.includes(product._id);
+  const renderProductCard = (product) => (
+    <Card key={product.id} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mb: 4, padding: 2 }}>
+  <CardMedia
+    component="img"
+    sx={{ width: 250, height: 200, marginRight: 2 }}
+    image={product.image}
+    alt="Product image"
+  />
+  <CardContent sx={{ flex: 2 }}>
+    <Typography variant="h6" gutterBottom>
+      User Description:
+    </Typography>
+    <Typography variant="body2" color="text.secondary" gutterBottom>
+      {product.userDescription}
+    </Typography>
 
-    return (
-      <Card key={product._id} sx={{ display: 'flex', mb: 4, boxShadow: 3, borderRadius: 2 }}>
-        <CardMedia
-          component="img"
-          sx={{ width: 250, borderRadius: '8px 0 0 8px' }}
-          image={product.image[0]}
-          alt={`${product.name} image`}
-        />
+    <Typography variant="h6" gutterBottom>
+      Model-Generated Description:
+    </Typography>
+    <Typography variant="body2" color="text.secondary" gutterBottom>
+      {product.modelGeneratedDescription}
+    </Typography>
 
-        <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', p: 3 }}>
-          <Box>
-            <Typography variant="h6" fontWeight="bold">
-              {product.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              {product.description}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {product.details}
-            </Typography>
-          </Box>
+    <Typography variant="h6" gutterBottom>
+      User-Provided Price:
+    </Typography>
+    <Typography variant="body2" color="text.secondary" gutterBottom>
+      {product.userProvidedPrice}
+    </Typography>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            {isPurchased ? (
-              <Button variant="contained" color="success" disabled>
-                ✔ Purchased
-              </Button>
-            ) : (
-              <Button variant="contained" color="secondary" onClick={() => handleBuy(product._id)}>
-                Buy
-              </Button>
-            )}
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  };  
+    <Typography variant="h6" gutterBottom>
+      Model-Estimated Price:
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      {product.modelEstimatedPrice}
+    </Typography>
+
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+      <Button variant="contained" color="secondary" onClick={() => handleBuy(product.id)}>
+        Buy
+      </Button>
+    </Box>
+  </CardContent>
+</Card>
+  );
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: 20 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ textAlign: 'center' }}>
+    <Container maxWidth="md" sx={{ marginTop: 15 }}>
+      
+
+      <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
         Product List
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
@@ -105,7 +94,7 @@ const ProductLists = () => {
           variant="outlined"
           fullWidth
           sx={{ maxWidth: '80%', mr: 2 }}
-          style={{ background: "white" }}
+          style={{background:"white"}}
         />
         <Button variant="contained" color="primary" onClick={handleSell}>
           Sell Your Product
@@ -113,30 +102,6 @@ const ProductLists = () => {
       </Box>
 
       {products.map(renderProductCard)}
-
-      {/* Feedback Dialog */}
-      <Dialog open={isFeedbackDialogOpen} onClose={() => setIsFeedbackDialogOpen(false)}>
-        <DialogTitle>Give Feedback</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Your feedback"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={3}
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsFeedbackDialogOpen(false)} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleFeedbackSubmit} color="primary">
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Container>
   );
 };

@@ -70,7 +70,7 @@ function BuyerForm() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ marginTop: 8 }}>
+    <Container maxWidth="sm" sx={{ marginTop: 18 }}>
       <Card>
         <CardContent>
           <Box
