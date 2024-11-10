@@ -13,7 +13,7 @@ const ProductList = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await fetch('/api/user/fetchProduct');
+        const res = await fetch('/api/user/fetchProduct/charity');
         const data = await res.json();
         setProducts(data);
       } catch (error) {

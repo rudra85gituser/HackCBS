@@ -6,7 +6,6 @@ import { v2 as cloudinary } from "cloudinary";
 
 
 const Adduser = async (req, res) => {
-    // const { name, email, password, address, phone } = req.body
     try {
         const {email} = req.body
         console.log("wokring",req.body)
@@ -205,6 +204,19 @@ const fetchProduct = async(req,res) => {
     }
 }
 
+const fetchProductcharity = async(req,res) => {
+    try {
+        const getProduct = await Product.find({ 
+            c:0
+        }).populate("seller")
+        console.log(getProduct,"getProduct");
+        res.status(200).json(getProduct)
+    } catch (error) {
+        console.log(error)
+        res.status(404).json(error)
+    }
+}
+
 const ShowProduct = async(req,res)=>{
     try {
         const {Pid} = req.params;
@@ -296,39 +308,4 @@ const fetchVender = async(req,res) => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// try {
-    //   const response = await fetch(`/api/user/Updatefeedback/${productId}`, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ feedback: 'Purchased' }), // Optional: additional feedback data
-    //   });
-
-    //   if (response.ok) {
-    //     setPurchasedProducts((prev) => [...prev, productId]); // Mark product as purchased
-    //   } else {
-    //     console.error("Failed to update feedback");
-    //   }
-    // } catch (error) {
-    //   console.error("Error during purchase:", error);
-    // }
-  // Render each product card
-
-
-export { Adduser, fetchVender, ShowProduct, Logout, charitySeller, buyerInfoFill, giveFeedback, searchProduct, sellerInfoFill, fetchProduct }
+export { Adduser, fetchVender, fetchProductcharity, ShowProduct, Logout, charitySeller, buyerInfoFill, giveFeedback, searchProduct, sellerInfoFill, fetchProduct }
