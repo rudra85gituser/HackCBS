@@ -4,10 +4,12 @@ import { PhotoCamera } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import usePreviewImg from "../hooks/usePreviewImg";
 import ModelData from "./ModelData";
+import Loading from "../pages/Loading.jsx";
 
 function SellerForm() {
   const navigate = useNavigate();
   const { imgUrls, handleImageChange, setImgUrls } = usePreviewImg();
+  const [isloading,setloading] = useState(false);
 
   const [formData, setFormData] = useState({
     userName: '',
@@ -22,7 +24,6 @@ function SellerForm() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userData = await getUserData();
 
       if (userData) {
         setFormData({
@@ -38,17 +39,6 @@ function SellerForm() {
 
     fetchUserData();
   }, []);
-
-  const getUserData = async () => {
-    return {
-      userName: 'John Doe',
-      userPhone: '1234567890',
-      userAddress: '123 Main St, Springfield',
-      productName: 'iron 35kg',
-      productDescription: 'Sample product description',
-      itemImages: [],
-    };
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +59,7 @@ function SellerForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
-
+    setloading(true);
     try {
       const res = await fetch("/api/user/seller", {
         method: "POST",
@@ -83,6 +73,8 @@ function SellerForm() {
       setmodelData(data.suggestions)
     } catch (error) {
       console.log(error);
+    } finally{
+      setloading(false);
     }
   };
 
@@ -92,6 +84,7 @@ function SellerForm() {
 
   return (
     <>
+    {isloading && <Loading/>}
      {modelData.length>0 && <ModelData modelData={modelData} />}
      <Container maxWidth="sm" sx={{ marginTop: 18 }}>
       <Card>
@@ -132,15 +125,6 @@ function SellerForm() {
               required
               multiline
               rows={3}
-            />
-
-            <TextField
-              label="Product Price"
-              name="productPrice"
-              value={formData.productPrice}
-              onChange={handleChange}
-              fullWidth
-              required
             />
 
             <TextField

@@ -21,11 +21,11 @@ function Appbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ backgroundColor: '#F5F5F5', color: 'black', px: 3, py: 1 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: '#F5F5F5', color: 'black', py: 1 }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
           <Box component={Link} to="/" sx={{ display: 'flex', justifyContent: "left", textDecoration: 'none' }}>
-            <img src={logo} width={130} height={100} alt="logo" />
+            <img src={logo} width={90} height={70} alt="logo" />
           </Box>
 
           {/* Navigation Links */}

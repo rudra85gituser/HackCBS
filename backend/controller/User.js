@@ -53,7 +53,7 @@ const buyerInfoFill = async(req,res) => {
 
 
 const sellerInfoFill = async (req, res) => {
-    const { userName, userAddress, userPhone, productName, productDescription, productPrice, itemImages, image } = req.body;
+    const { userName, userAddress, userPhone, productName, productDescription, itemImages, image } = req.body;
     const id = req.user?._id;
     const SearchSeller = await Seller.findById(id);
 
@@ -77,7 +77,6 @@ const sellerInfoFill = async (req, res) => {
         const product = await Product.create({
             name: productName,
             description: productDescription,
-            price: productPrice,
             image: uploadedImages  
         });
 
