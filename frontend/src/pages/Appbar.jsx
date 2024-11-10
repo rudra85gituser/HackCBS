@@ -3,7 +3,7 @@ import logo from "../assets/logo.png";
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Toolbar, Typography, Box, AppBar, Button, IconButton } from '@mui/material';
-import { assets } from "../assets/assests.js";
+import { assets } from "../assets/assets.js";
 
 function Appbar() {
   const navigate = useNavigate();
@@ -21,11 +21,11 @@ function Appbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ backgroundColor: '#F5F5F5', color: 'black', px: 3, py: 1 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: '#F5F5F5', color: 'black', py: 1 }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
           <Box component={Link} to="/" sx={{ display: 'flex', justifyContent: "left", textDecoration: 'none' }}>
-            <img src={logo} width={130} height={100} alt="logo" />
+            <img src={logo} width={90} height={70} alt="logo" />
           </Box>
 
           {/* Navigation Links */}
@@ -134,13 +134,13 @@ function Appbar() {
           )}
         </Toolbar>
       </AppBar>
-      {!isAuthenticated && (
-        <Box sx={{ textAlign: 'center', fontWeight: 900, mt: 10 }}>
-          <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>
+      {/* {!isAuthenticated && (
+        <Box sx={{ textAlign: 'center', fontWeight: 900, mt: 16 }} >
+          <Typography sx={{ fontSize: '20px', fontWeight: 700 }} >
             Sign-up to enjoy our Services
           </Typography>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 }
