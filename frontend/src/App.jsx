@@ -20,12 +20,44 @@ import SellerOLXForm from "./part2/Seller.jsx";
 import BuyerOLXForm from "./part2/Buyer.jsx";
 import ProductList from "./part2/ProductList.jsx";
 import MyProfile from './pages/MyProfile.jsx';
+<<<<<<< HEAD
 import Contact from './pages/Contact.jsx';
+=======
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import userAtom from './atom/userAtom.js';
+>>>>>>> 14b899136770f6e0ee38267ecbf1ce5d78983281
 
 
 
 function App() {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated,user } = useAuth0();
+  console.log(isAuthenticated,user);
+  const [userSave,setUser] = useRecoilState(userAtom);
+  const getUser = async(user)=>{
+    try {
+      const Iuser = {
+        email:user.email
+      }
+      const res = await fetch("/api/user/AddUser",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(Iuser)
+      })
+      const data = await res.json();
+      setUser(data)
+      localStorage.setItem("user-hackcbs", JSON.stringify(data));
+      console.log(userSave,"data");
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
+  useEffect(()=>{
+    if(isAuthenticated){
+      getUser(user);
+    }
+  },[user])
   return (
     <Router>
       <>

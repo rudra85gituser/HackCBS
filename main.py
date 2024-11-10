@@ -148,11 +148,7 @@ async def classify_scrap(image_urls: List[str]):
     Classify scrap items based on image URLs and user location.
     """
     try:
-            
-        # image_urls =[
-        #     "https://planetdetroit.org/wp-content/uploads/2023/02/ABfordTrash2-1024x762.jpg",
-        #     "https://planetdetroit.org/wp-content/uploads/2023/02/ABfordTrash2-1024x762.jpg"
-        # ]
+        print(image_urls)
         # Get user location
         location = LocationService.get_location()
         state = location.get("state", "Maharashtra")
@@ -189,6 +185,6 @@ async def classify_scrap(image_urls: List[str]):
                 "recycling_rules": RECYCLING_RULES.get(state, ["No specific rules found for this state."])
             })
 
-        return classifications.recommendation
+        return classifications  # Return the entire list of classifications
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing images: {str(e)}")

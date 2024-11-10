@@ -1,38 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button, Typography, Card, CardContent, Container } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
-import { useNavigate , useRoutes} from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Box, TextField, Button, Typography, Card, CardContent, Container } from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import usePreviewImg from "../hooks/usePreviewImg";
+import ModelData from "./ModelData";
 
 function SellerForm() {
-
   const navigate = useNavigate();
-   
-
-      const handleModelData = () => {
-        navigate('/part1/ModelData');
-      };
-
+  const { imgUrls, handleImageChange, setImgUrls } = usePreviewImg();
 
   const [formData, setFormData] = useState({
     userName: '',
-    userEmail: '',
     userPhone: '',
     userAddress: '',
+    productName: '',
+    productPrice: '',
     productDescription: '',
-    itemImages: [],
+    itemImages: [], // Store image URLs here
   });
+  const [modelData,setmodelData]=useState([])
 
   useEffect(() => {
-    // Simulate fetching user data from an API or local storage
     const fetchUserData = async () => {
-      const userData = await getUserData(); // Replace with actual API call or data source
+      const userData = await getUserData();
 
       if (userData) {
         setFormData({
           userName: userData.userName || '',
-          userEmail: userData.userEmail || '',
           userPhone: userData.userPhone || '',
           userAddress: userData.userAddress || '',
+          productName: userData.productName || '',
           productDescription: userData.productDescription || '',
           itemImages: userData.itemImages || [],
         });
@@ -43,12 +40,11 @@ function SellerForm() {
   }, []);
 
   const getUserData = async () => {
-    // Replace this with your actual API call or local storage logic
     return {
       userName: 'John Doe',
-      userEmail: 'john.doe@example.com',
       userPhone: '1234567890',
       userAddress: '123 Main St, Springfield',
+      productName: 'iron 35kg',
       productDescription: 'Sample product description',
       itemImages: [],
     };
@@ -62,34 +58,55 @@ function SellerForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+  // Update formData with image URLs when imgUrls changes
+  useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
-      itemImages: files,
+      itemImages: imgUrls, // Store the image preview URLs
     }));
+  }, [imgUrls]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form Data:", formData);
+
+    try {
+      const res = await fetch("/api/user/seller", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data  = await res.json();
+      console.log(data.suggestions);
+      setmodelData(data.suggestions)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form Data:', formData);
+  const handleModelData = () => {
+    navigate("/part1/ModelData");
   };
 
   return (
-    <Container maxWidth="sm" sx={{ marginTop: 12 }}>
+    <>
+     {modelData.length>0 && <ModelData modelData={modelData} />}
+     <Container maxWidth="sm" sx={{ marginTop: 12 }}>
       <Card>
+
         <CardContent>
           <Box
             component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <Typography variant="h5" textAlign="center" gutterBottom>
               Sell Your Recyclable Items
             </Typography>
 
             <TextField
-              label="Username"
+              label="Name"
               name="userName"
               value={formData.userName}
               onChange={handleChange}
@@ -98,19 +115,8 @@ function SellerForm() {
             />
 
             <TextField
-              label="Email"
-              name="userEmail"
-              type="email"
-              value={formData.userEmail}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-
-            <TextField
-              label="Phone Number"
+              label="Phone"
               name="userPhone"
-              type="tel"
               value={formData.userPhone}
               onChange={handleChange}
               fullWidth
@@ -126,6 +132,24 @@ function SellerForm() {
               required
               multiline
               rows={3}
+            />
+
+            <TextField
+              label="Product Price"
+              name="productPrice"
+              value={formData.productPrice}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+
+            <TextField
+              label="Product Name"
+              name="productName"
+              value={formData.productName}
+              onChange={handleChange}
+              fullWidth
+              required
             />
 
             <TextField
@@ -150,9 +174,28 @@ function SellerForm() {
                 accept="image/*"
                 hidden
                 multiple
-                onChange={handleImageChange}
+                onChange={(e) => {
+                  handleImageChange(e);
+                }}
               />
             </Button>
+
+            {/* Image Previews */}
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
+              {imgUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Preview ${index + 1}`}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
+                />
+              ))}
+            </Box>
 
             <Button
               type="submit"
@@ -161,13 +204,16 @@ function SellerForm() {
               size="large"
               fullWidth
               sx={{ mt: 2 }}
-              onClick={handleModelData}>
+              onClick={handleSubmit}
+            >
               Continue to Sell
             </Button>
           </Box>
         </CardContent>
       </Card>
     </Container>
+    </>
+
   );
 }
 

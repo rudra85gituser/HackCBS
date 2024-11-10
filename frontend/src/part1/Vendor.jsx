@@ -87,7 +87,6 @@ function VendorForm() {
         <CardContent>
           <Box
             component="form"
-            onSubmit={handleSubmit}
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <Typography variant="h5" textAlign="center" gutterBottom>

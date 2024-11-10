@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import logo from "../assets/logo2.png";
+import logo from "../assets/logo.png";
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Toolbar, Typography, Box, AppBar, Button, IconButton } from '@mui/material';
@@ -24,8 +24,8 @@ function Appbar() {
       <AppBar position="fixed" sx={{ backgroundColor: '#F5F5F5', color: 'black', px: 3, py: 1 }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
-          <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-            <img src={logo} width={130} height={60} alt="logo" />
+          <Box component={Link} to="/" sx={{ display: 'flex', justifyContent: "left", textDecoration: 'none' }}>
+            <img src={logo} width={130} height={100} alt="logo" />
           </Box>
 
           {/* Navigation Links */}
