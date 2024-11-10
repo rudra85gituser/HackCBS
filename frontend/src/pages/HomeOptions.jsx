@@ -86,7 +86,7 @@ function Options() {
                 <br></br>
                 <div style={{display:"flex", justifyContent:'center' , gap: '100px' }}>
                 <Button variant="contained" sx={{ backgroundColor:'#298282'}} onClick={handleButtonClick3}>Product List</Button>
-                {/*<Button variant="contained" sx={{ backgroundColor:'#298282'}} onClick={handleButtonClick4}>Continue as BUYER</Button>*/}
+                {/* {/<Button variant="contained" sx={{ backgroundColor:'#298282'}} onClick={handleButtonClick4}>Continue as BUYER</Button>/} */}
                 </div>
 
                 <br></br>

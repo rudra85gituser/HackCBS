@@ -33,7 +33,7 @@ function Appbar() {
             {["Home", "Contact", "Documentation"].map((item, index) => (
               <Link
                 key={index}
-                to={item === "Home" ? "/" : item === "Contact" ? "/contact" : "https://www.google.com/"}
+                to={item === "Home" ? "/" : item === "Contact" ? "/contact" : "https://documentationofhomescrapper-s9ee3fpbijuazj6mq4pcq6.streamlit.app"}
                 style={{
                   textDecoration: 'none',
                   color: 'black',
